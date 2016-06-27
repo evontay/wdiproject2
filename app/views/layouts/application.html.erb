@@ -11,9 +11,9 @@
   <body>
     <% if user_logged_in? %>
       <h3>Welcome, <%= current_user.email %></h3>
-      <%= link_to "Logout", logout_path, method: :delete %>
+      <%= link_to "Sign Out", sign_out_path, method: :delete %>
     <% else %>
-      <%= link_to "Login", login_path %>
+      <%= link_to "Sign In", sign_in_path %>
     <% end %>
 
     <% flash.each do |name, message| %>
