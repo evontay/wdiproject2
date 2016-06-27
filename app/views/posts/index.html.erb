@@ -2,6 +2,16 @@
 
 <h1>Posts</h1>
 
+<% if user_logged_in? %>
+      <h3>Welcome, <%= current_user.email %></h3>
+      <%= link_to 'New Post', new_user_post_path(current_user) %>
+      <%= link_to "Sign Out", sign_out_path, method: :delete %>
+      
+    <% else %>
+      <%= link_to "Sign In", sign_in_path %>
+      <%= link_to 'Sign Up', new_user_path %>
+    <% end %>
+
 <table>
   <thead>
     <tr>
@@ -12,15 +22,15 @@
     </tr>
   </thead>
 
-  <tbody>
+  <tbody class="posts">
     <% @posts.each do |post| %>
-      <tr>
-        <td><%= post.user %></td>
+      <tr class="post">
+        <td><%= post.user.name %></td>
         <td><%= post.title %></td>
         <td><%= post.body %></td>
-        <td><%= link_to 'Show', post %></td>
-        <td><%= link_to 'Edit', edit_post_path(post) %></td>
-        <td><%= link_to 'Destroy', post, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Show', user_post_path(post.user, post) %></td>
+        <td><%= link_to 'Edit', edit_user_post_path(post.user, post) %></td>
+        <td><%= link_to 'Destroy', user_post_path(post.user, post), method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -28,4 +38,4 @@
 
 <br>
 
-<%= link_to 'New Post', new_user_post_path %>
+

@@ -18,10 +18,14 @@ class ApplicationController < ActionController::Base
 
   def authenticate_user
     unless user_logged_in?
-      flash[:error] = 'Please login first!'
-      redirect_to login_url
+      flash[:error] = 'You must log in to access this page.'
+      redirect_to home_url
       # use _url inside controllers and _path in views
     end
+  end
+
+  def create
+  
   end
 end
 

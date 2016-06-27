@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
 
-
   
-  root 'static#index', as: 'home'
+  root 'posts#index', as: 'home'
 
 
   resources :users do
@@ -10,7 +9,7 @@ Rails.application.routes.draw do
   end
 
 
-  get 'sign_up', to: 'users#new', as: :sign_in
+  get 'sign_up', to: 'users#new', as: :sign_up
 
   get 'new_user_post', to: 'posts#new'
   get 'edit_user_post', to: 'posts#edit'

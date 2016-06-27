@@ -5,7 +5,7 @@ class PostsController < ApplicationController
   # GET /posts
   # GET /posts.json
   def index
-    @posts = Post.all
+    @posts = Post.all.order("created_at DESC")
   end
 
   # GET /posts/1
@@ -20,18 +20,21 @@ class PostsController < ApplicationController
 
   # GET /posts/1/edit
   def edit
-
+    if @post.user != current_user
+    redirect_to home_url, notice: "This post doesn't belong to you!"
+    
+    end
   end
 
   # POST /posts
   # POST /posts.json
   def create
-    @post = current_users.posts.new(post_params)
+    @post = current_user.posts.new(post_params)
     @post.user = current_user
 
     respond_to do |format|
       if @post.save
-        format.html { redirect_to @post, notice: 'Post was successfully created.' }
+        format.html { redirect_to user_post_path(@post.user, @post), notice: 'Post was successfully created.' }
         format.json { render :show, status: :created, location: @post }
       else
         format.html { render :new }
@@ -43,10 +46,10 @@ class PostsController < ApplicationController
   # PATCH/PUT /posts/1
   # PATCH/PUT /posts/1.json
   def update
-    @post = current_user.photos.find(params[:id])
+    @post = current_user.posts.find(params[:id])
     respond_to do |format|
       if @post.update(post_params)
-        format.html { redirect_to @post, notice: 'Post was successfully updated.' }
+        format.html { redirect_to user_post_url(@post.user, @post), notice: 'Post was successfully updated.' }
         format.json { render :show, status: :ok, location: @post }
       else
         format.html { render :edit }
@@ -58,10 +61,10 @@ class PostsController < ApplicationController
   # DELETE /posts/1
   # DELETE /posts/1.json
   def destroy
-    @post = current_user.post.find(params[:id])
+    # @post = user_posts_url.find(params[:id])
     @post.destroy
     respond_to do |format|
-      format.html { redirect_to user_posts_url(current_user), notice: 'Post was successfully destroyed.' }
+      format.html { redirect_to user_posts_url(session[:user_id]), notice: 'Post was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -75,6 +78,6 @@ class PostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit( :title, :body)
+      params.require(:post).permit(:user_id, :title, :body)
     end
 end
