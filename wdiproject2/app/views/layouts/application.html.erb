@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Wdiproject2</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+  </head>
+
+  <body>
+    <% if user_logged_in? %>
+      hello, <%= current_user.name %>
+      <%= link_to "Logout", logout_path, method: :delete %>
+    <% else %>
+      <%= link_to "Login", login_path %>
+    <% end %>
+
+    <% flash.each do |name, message| %>
+    <div class="flash-message flash-message-<%= name %>">
+      <%= message %>
+    </div>
+    <% end %>
+    <%= yield %>
+  </body>
+</html>
+
+
