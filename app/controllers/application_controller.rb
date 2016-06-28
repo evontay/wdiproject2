@@ -24,8 +24,6 @@ class ApplicationController < ActionController::Base
     end
   end
 
-  def create
-  
-  end
+
 end
 
